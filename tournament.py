@@ -34,8 +34,9 @@ def countPlayers():
     c = conn.cursor()
     c.execute("select count(*) from t_players")
     q_players = c.fetchone()
-    return q_players[0]
     conn.close()
+    return q_players[0]
+    
 
 def registerPlayer(name):
     """Adds a player to the tournament database.

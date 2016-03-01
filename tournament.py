@@ -68,11 +68,12 @@ def playerStandings():
     """
     conn = connect()
     c = conn.cursor()
-    c.execute("select a.id, a.name as player_name, " + 
-              "(select count(*) from t_results b where b.id_winner = a.id) as wins, " + 
-              "(select count(*) from t_results b where (b.id_winner = a.id) or (b.id_loser = a.id)) as matches " + 
-              "from t_players a " + 
-              "order by wins desc, name")
+    c.execute("select player_id, " + 
+              "player_name, " + 
+              "wins, " + 
+              " matches " + 
+              "from v_player_standings " + 
+              "order by wins desc, player_name")
     #players = [{'id': int(row[0]), 'name': str(row[1]), 'wins': int(row[2]), 'matches': int(row[3])} for row in c.fetchall()]
     players = c.fetchall()
     conn.close()

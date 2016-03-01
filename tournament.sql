@@ -20,3 +20,11 @@ create table t_results(
     id_winner int,
     id_loser int
     );
+
+create view v_player_standings as
+    select
+        a.id as player_id,
+        a.name as player_name,
+        (select count(*) from t_results b where b.id_winner = a.id) as wins,
+        (select count(*) from t_results b where (b.id_winner = a.id) or (b.id_loser = a.id)) as matches
+    from t_players a

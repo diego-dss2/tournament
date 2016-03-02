@@ -49,6 +49,7 @@ def registerPlayer(name):
     """
     conn = connect()
     c = conn.cursor()
+    # Use of query parameters to prevent SQL injection
     c.execute("insert into t_players (name) values (%s) ", (name,))
     conn.commit()
     conn.close()
@@ -68,13 +69,13 @@ def playerStandings():
     """
     conn = connect()
     c = conn.cursor()
+    # use of v_player_standings view to obtain a list of players ordered by wins and name
     c.execute("select player_id, " + 
               "player_name, " + 
               "wins, " + 
-              " matches " + 
+              "matches " + 
               "from v_player_standings " + 
               "order by wins desc, player_name")
-    #players = [{'id': int(row[0]), 'name': str(row[1]), 'wins': int(row[2]), 'matches': int(row[3])} for row in c.fetchall()]
     players = c.fetchall()
     conn.close()
     return players
@@ -107,9 +108,9 @@ def swissPairings():
         id2: the second player's unique id
         name2: the second player's name
     """
-    # obtengo la lista de jugadores ordenada por cantidad de triunfos
+    # get the list of players order by wins
     lista = playerStandings()
-    # voy obteniendo de a dos para emparejarlos y que jueguen
+    # pair them and make them play
     parejas = []
     for i in xrange(0,len(lista)-1, 2):
         parejas.append((lista[i][0], lista[i][1], lista[i+1][0], lista[i+1][1]))
